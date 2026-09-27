@@ -32,6 +32,12 @@ final class ConnectorService {
       [$data['name'],$slug,$data['description'],$data['provider'],$data['model'],$data['system_instructions'],json_encode($data['input_schema']),json_encode($data['output_schema']),$data['is_active']?1:0,$id]);
     return $this->find($id);
   }
+  public function rotateKey(int $id):array{
+    $current=$this->find($id);if(!$current)throw new HttpException('not_found','Connector not found.',404);
+    $plain='uai_'.bin2hex(random_bytes(24));
+    $this->db->run('UPDATE connectors SET api_key_hash=?,api_key_prefix=?,updated_at=CURRENT_TIMESTAMP WHERE id=?',[hash('sha256',$plain),substr($plain,0,10),$id]);
+    $current=$this->find($id);$current['new_api_key']=$plain;return $current;
+  }
   public function delete(int $id):void{if(!$this->db->run('DELETE FROM connectors WHERE id=?',[$id]))throw new HttpException('not_found','Connector not found.',404);}
   public function logs(int $id):array{return $this->db->all('SELECT request_id,status,response_time_ms,input_tokens,output_tokens,total_tokens,estimated_cost,provider,model,error_type,error_message,request_timestamp FROM api_requests WHERE connector_id=? ORDER BY id DESC LIMIT 100',[$id]);}
   private function validate(array $p):array{
