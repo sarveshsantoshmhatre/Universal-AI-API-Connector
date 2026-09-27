@@ -5,9 +5,9 @@ use App\Config;use App\HttpException;use App\ProviderAdapter;use App\SchemaTools
 
 final class GeminiAdapter implements ProviderAdapter {
   private const BASE='https://generativelanguage.googleapis.com/v1beta';
-  public function generate(array $connector,array $inputs):array{
+  public function generate(array $connector,array $inputs,string $prompt):array{
     $key=Config::get('GEMINI_API_KEY');if(!$key)throw new HttpException('provider_not_configured','Gemini API key is not configured on the server.',503);
-    $parts=[['text'=>$connector['system_instructions']],['text'=>$inputs['_prompt']??'']];
+    $parts=[['text'=>$connector['system_instructions']],['text'=>$prompt]];
     foreach($inputs as $name=>$value){if(!is_array($value)||!isset($value['kind']))continue;$bytes=$this->bytes($value);$parts[]=['inline_data'=>['mime_type'=>$value['mime_type']?:'application/octet-stream','data'=>base64_encode($bytes)]];}
     $schema=json_decode($connector['output_schema_json'],true);if(!is_array($schema))throw new HttpException('invalid_schema','Connector output schema is invalid.',422);
     $body=['contents'=>[['role'=>'user','parts'=>$parts]],'generationConfig'=>['responseMimeType'=>'application/json','responseSchema'=>SchemaTools::toGemini($schema)]];
