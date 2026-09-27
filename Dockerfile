@@ -6,6 +6,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+COPY php.ini /usr/local/etc/php/conf.d/api-hub.ini
 COPY . /app
 
 RUN mkdir -p /app/data /app/storage && chown -R www-data:www-data /app/data /app/storage
