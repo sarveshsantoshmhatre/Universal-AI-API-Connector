@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: universal-ai-api-connector
+    runtime: docker
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_URL
+        sync: false
+      - key: ADMIN_KEY
+        sync: false
+      - key: DATABASE_DSN
+        sync: false
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MAX_JSON_BYTES
+        value: "1048576"
+      - key: MAX_UPLOAD_BYTES
+        value: "10485760"
+      - key: PROVIDER_TIMEOUT_SECONDS
+        value: "60"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "60"
