@@ -4,9 +4,9 @@ namespace App\Providers;
 use App\Config;use App\HttpException;use App\ProviderAdapter;
 
 final class OpenAIAdapter implements ProviderAdapter {
-  public function generate(array $connector,array $inputs):array {
+  public function generate(array $connector,array $inputs,string $prompt):array {
     $key=Config::get('OPENAI_API_KEY');if(!$key)throw new HttpException('provider_not_configured','OpenAI API key is not configured on the server.',503);
-    $content=[['type'=>'input_text','text'=>$inputs['_prompt']??'']];
+    $content=[['type'=>'input_text','text'=>$prompt]];
     foreach($inputs as $name=>$value){if(!is_array($value)||!isset($value['kind']))continue;
       $bytes=$this->bytes($value);
       if($value['kind']==='image')$content[]=['type'=>'input_image','image_url'=>'data:'.($value['mime_type']?:'image/jpeg').';base64,'.base64_encode($bytes),'detail'=>'auto'];
