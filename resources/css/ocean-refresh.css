@@ -1,0 +1,136 @@
+/* Ocean / signal UI refresh.
+ * This file intentionally overrides visual tokens only; app behavior and routes are unchanged.
+ */
+:root {
+    --bg: #f2f7f7;
+    --bg-glow: rgb(13 148 136 / 0.10);
+    --surface: #ffffff;
+    --surface-2: #f5fafa;
+    --surface-hover: #e5f3f1;
+    --border: #d6e5e3;
+    --border-strong: #afcbc7;
+    --text: #142d31;
+    --text-2: #456267;
+    --text-3: #6b8589;
+    --accent: #0f766e;
+    --accent-hover: #115e59;
+    --accent-bright: #14b8a6;
+    --accent-contrast: #ffffff;
+    --accent-soft: #d8f3ef;
+    --accent-text: #0f766e;
+    --success: #16794b;
+    --success-soft: #dcfce7;
+    --warning: #9a5b0b;
+    --warning-soft: #fff0cf;
+    --danger: #b93838;
+    --danger-soft: #ffe4e4;
+    --neutral-soft: #e8f0ef;
+    --code-bg: #102b31;
+    --code-border: #24464b;
+    --code-text: #e7f8f5;
+    --code-muted: #94b8b6;
+    --ring: 0 0 0 3px rgb(20 184 166 / 0.28);
+    --shadow-sm: 0 1px 2px rgb(20 45 49 / 0.035);
+    --shadow-md: 0 8px 24px -16px rgb(20 45 49 / 0.24);
+    --shadow-lg: 0 24px 52px -24px rgb(8 47 52 / 0.32);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --glass-bg: rgb(255 255 255 / 0.72);
+    --glass-bg-strong: rgb(255 255 255 / 0.9);
+    --glass-edge: rgb(255 255 255 / 0.95);
+    --glass-outline: rgb(20 45 49 / 0.12);
+    --glass-shadow: 0 14px 36px -18px rgb(20 45 49 / 0.24);
+}
+
+:root[data-theme="dark"] {
+    --bg: #0c191e;
+    --bg-glow: rgb(45 212 191 / 0.10);
+    --surface: #13272d;
+    --surface-2: #193239;
+    --surface-hover: #214149;
+    --border: #29464c;
+    --border-strong: #3b6065;
+    --text: #e8f4f2;
+    --text-2: #bfd3d1;
+    --text-3: #8daaa9;
+    --accent: #2dd4bf;
+    --accent-hover: #5eead4;
+    --accent-bright: #5eead4;
+    --accent-contrast: #082f32;
+    --accent-soft: rgb(45 212 191 / 0.14);
+    --accent-text: #5eead4;
+    --success: #6ee7a8;
+    --success-soft: rgb(34 197 94 / 0.14);
+    --warning: #f4c56a;
+    --warning-soft: rgb(244 197 106 / 0.14);
+    --danger: #ff9292;
+    --danger-soft: rgb(255 100 100 / 0.14);
+    --neutral-soft: rgb(191 211 209 / 0.10);
+    --code-bg: #071317;
+    --code-border: #29464c;
+    --code-text: #e8f4f2;
+    --code-muted: #8daaa9;
+    --ring: 0 0 0 3px rgb(45 212 191 / 0.32);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.16);
+    --shadow-md: 0 10px 28px -18px rgb(0 0 0 / 0.65);
+    --shadow-lg: 0 24px 64px -24px rgb(0 0 0 / 0.78);
+    --glass-bg: rgb(19 39 45 / 0.74);
+    --glass-bg-strong: rgb(19 39 45 / 0.92);
+    --glass-edge: rgb(255 255 255 / 0.12);
+    --glass-outline: rgb(255 255 255 / 0.08);
+    --glass-shadow: 0 14px 40px -18px rgb(0 0 0 / 0.72);
+}
+
+/* Sharper product identity, calmer surfaces, and clearer interaction states. */
+html, body { background-color: var(--bg); }
+.app-shell::before {
+    background:
+        radial-gradient(58% 95% at 50% 0%, var(--bg-glow), transparent 72%),
+        linear-gradient(to right, var(--border) 1px, transparent 1px) 0 0 / 56px 56px,
+        linear-gradient(to bottom, var(--border) 1px, transparent 1px) 0 0 / 56px 56px;
+    opacity: 0.42;
+}
+.topbar {
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    border-bottom-color: var(--border);
+}
+.brand-mark {
+    border-radius: 10px;
+    background: linear-gradient(145deg, #2dd4bf, #0f766e 72%, #115e59);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), 0 3px 12px -4px rgb(15 118 110 / 0.52);
+}
+.nav-link.is-active {
+    color: var(--accent-text);
+    background: var(--accent-soft);
+}
+.nav-link:hover { color: var(--accent-text); }
+.eyebrow { letter-spacing: 0.1em; }
+.card {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+.card:hover { border-color: var(--border-strong); }
+.button-primary {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 0.06);
+}
+.button-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+    box-shadow: 0 4px 12px -6px var(--accent);
+}
+.button-secondary { border-color: var(--border-strong); }
+.button-secondary:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+input:focus, select:focus, textarea:focus,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+    border-color: var(--accent) !important;
+}
+::selection { background: var(--accent-soft); color: var(--text); }
+@media (prefers-reduced-motion: no-preference) {
+    .card, .button, .nav-link, .icon-button {
+        transition-duration: 180ms;
+    }
+}
