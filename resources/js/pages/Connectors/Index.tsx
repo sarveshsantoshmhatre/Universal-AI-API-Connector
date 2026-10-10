@@ -1,19 +1,10 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Activity, ArrowRight, ArrowUpRight, BookOpen, Braces, Clock, Cpu, FileCode2, FilePlus2, Gauge, Hash, ImageIcon, KeyRound, Layers, Plus, Search, SearchX, ShieldCheck, Shuffle, SlidersHorizontal, Sparkles, Zap } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react';
+import { Activity, ArrowUpRight, BookOpen, Clock, Cpu, FilePlus2, Layers, Plus, Search, SearchX, Zap } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AppShell } from '../../components/AppShell';
 import { ProviderBadge, StatusBadge } from '../../components/Badges';
 import { CopyButton } from '../../components/CopyButton';
-import BlurText from '../../components/reactbits/BlurText';
-import BorderGlow from '../../components/reactbits/BorderGlow';
-import CountUp from '../../components/reactbits/CountUp';
-import LogoLoop from '../../components/reactbits/LogoLoop';
-import Magnet from '../../components/reactbits/Magnet';
-import RotatingText from '../../components/reactbits/RotatingText';
-import StarBorder from '../../components/reactbits/StarBorder';
-import { useTheme } from '../../components/useTheme';
 import { RelativeTime } from '../../components/RelativeTime';
-import { RequestAnatomy } from '../../components/RequestAnatomy';
 import { buildCurl } from '../../curl';
 import type { Connector, ProviderStatus } from '../../types';
 
@@ -26,10 +17,7 @@ export default function ConnectorIndex({ connectors }: Props) {
     const [query, setQuery] = useState('');
     const [filter, setFilter] = useState<Filter>('all');
     const search = useRef<HTMLInputElement>(null);
-    const theme = useTheme();
     const { providerStatus } = usePage<{ providerStatus: ProviderStatus[] }>().props;
-    const showcase = connectors.find((connector) => connector.slug === 'business-card-scanner' && connector.status === 'active')
-        ?? connectors.find((connector) => connector.status === 'active') ?? null;
     const quickstart = connectors.find((connector) => connector.slug === 'article-writer' && connector.status === 'active' && connector.auth_mode === 'none')
         ?? connectors.find((connector) => connector.status === 'active' && connector.auth_mode === 'none' && connector.input_schema.every((field) => field.type !== 'image' && field.type !== 'file'))
         ?? null;
@@ -60,80 +48,25 @@ export default function ConnectorIndex({ connectors }: Props) {
 
     return <AppShell>
         <Head title="Connectors" />
-        <section className="hero" data-hero-fade>
-            <span className="hero-badge"><span className="status-dot is-live" />Live on Gemini and Groq<span className="hide-sm"> · every response schema-checked</span></span>
-            <h1 className="hero-title">
-                <BlurText text="Turn a prompt into" delay={90} animateBy="words" direction="bottom" className="hero-title-line" />
-                <RotatingText
-                    texts={['a production API.', 'a card scanner.', 'an invoice parser.', 'an article writer.', 'a content rewriter.']}
-                    mainClassName="hero-title-rotor"
-                    splitLevelClassName="hero-rotor-word"
-                    staggerFrom="first"
-                    staggerDuration={0.014}
-                    initial={{ y: '105%', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: '-110%', opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } }}
-                    transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-                    rotationInterval={2800}
-                />
-            </h1>
-            <p className="hero-lede">Describe the inputs, pick a model, define the JSON you expect. The hub generates a validated endpoint, its documentation and a playground, then logs every call.</p>
-            <div className="hero-actions">
-                <Magnet padding={60} magnetStrength={6}>
-                    <StarBorder as={Link} href="/connectors/create" className="hero-cta" color={theme === 'dark' ? '#ddd6fe' : '#8b5cf6'} speed="5s" thickness={1.5} backgroundColor="var(--accent)" textColor="var(--accent-contrast)" borderColor="transparent" innerClassName="hero-cta-inner">
-                        <Plus size={17} /> New connector
-                    </StarBorder>
-                </Magnet>
-                {showcase && <Magnet padding={60} magnetStrength={8}>
-                    <Link href={`/connectors/${showcase.id}`} className="button button-outline button-lg hero-cta-secondary">Try {showcase.name} <ArrowRight size={16} /></Link>
-                </Magnet>}
+        <section className="page-header">
+            <div>
+                <h1>Connectors</h1>
+                <p className="page-subtitle">Turn an AI prompt into a validated HTTP API. Each connector below is a live endpoint with its own docs, playground and usage log.</p>
             </div>
-        </section>
-
-        <section className="stage" aria-label="Live example" data-reveal>
-            <BorderGlow className="stage-glow" backgroundColor={theme === 'dark' ? '#0f0c17' : '#1e1a2a'} borderRadius={16} glowColor="262 83 70" colors={['#8b5cf6', '#ddd6fe', '#ede9fe']} glowIntensity={0.9} coneSpread={22} edgeSensitivity={28} animated>
-                <RequestAnatomy connector={showcase} />
-            </BorderGlow>
-            <div className="stage-side">
-                {quickstart && quickstartCurl && <div className="command-panel">
-                    <div className="command-panel-head">
-                        <h2>Call a live endpoint</h2>
-                        <CopyButton value={quickstartCurl} label="Copy command" showLabel />
-                    </div>
-                    <pre>{quickstartCurl}</pre>
-                    <Link href={`/connectors/${quickstart.id}/docs`} className="command-panel-link"><BookOpen size={14} /> {quickstart.name} API reference</Link>
-                </div>}
-                <ul className="provider-status" aria-label="Provider status">
-                    {providerStatus.map((provider) => <li key={provider.id} className={provider.configured ? 'is-ready' : 'is-missing'} title={provider.configured ? 'Credentials configured on the server' : 'No API key configured on the server'}>
-                        <span className="status-dot" />{provider.label}<span className="muted">{provider.configured ? 'ready' : 'not configured'}</span>
-                    </li>)}
-                </ul>
+            <div className="header-actions">
+                <Link href="/connectors/create" className="button button-primary"><Plus size={15} /> New connector</Link>
             </div>
-        </section>
-
-        <div className="ticker" data-reveal>
-            <LogoLoop logos={ticker} speed={42} gap={44} logoHeight={22} pauseOnHover fadeOut fadeOutColor="var(--bg)" ariaLabel="Platform capabilities" />
-        </div>
-
-        <section className="feature-grid" aria-label="What every connector gets">
-            <Feature icon={<Shuffle size={18} />} title="Provider adapters" body="Gemini and Groq behind one interface. Switch model or provider without touching code." />
-            <Feature icon={<SlidersHorizontal size={18} />} title="Six input types" body="Text, number, boolean, image, file and JSON, each validated with size and length limits." />
-            <Feature icon={<Braces size={18} />} title="Enforced output" body="Every response is checked against your JSON Schema before it reaches the caller." />
-            <Feature icon={<BookOpen size={18} />} title="Generated docs" body="Endpoint reference with cURL, JavaScript and Python examples, limits and error codes." />
-            <Feature icon={<KeyRound size={18} />} title="Scoped API keys" body="Per-connector keys, hashed at rest, shown once and revocable instantly." />
-            <Feature icon={<ShieldCheck size={18} />} title="Logged and rate limited" body="Every call is recorded with latency and tokens. Clients are throttled with standard headers." />
         </section>
 
         {connectors.length === 0 ? <EmptyState /> : <>
-            <div className="section-heading" data-reveal><h2><BlurText text="Your connectors" delay={70} direction="bottom" /></h2><span className="muted">Each one is a live endpoint.</span></div>
-            <section className="metrics" aria-label="Workspace summary" data-reveal>
+            <section className="metrics" aria-label="Workspace summary">
                 <Metric icon={<Layers size={14} />} label="Connectors" value={connectors.length} />
                 <Metric icon={<Zap size={14} />} label="Active" value={counts.active} hint={`of ${connectors.length}`} />
                 <Metric icon={<Activity size={14} />} label="Total requests" value={totalRequests} />
                 <Metric icon={<Cpu size={14} />} label="Providers" value={providerCount} />
             </section>
 
-            <div className="toolbar" data-reveal>
+            <div className="toolbar">
                 <label className="search">
                     <Search size={15} />
                     <span className="sr-only">Search connectors</span>
@@ -150,6 +83,27 @@ export default function ConnectorIndex({ connectors }: Props) {
             {visible.length === 0
                 ? <div className="card empty-inline"><SearchX size={26} /><strong>No connectors match</strong><span>Try a different search or status filter.</span><button type="button" className="button button-secondary button-sm" onClick={() => { setQuery(''); setFilter('all'); }}>Clear filters</button></div>
                 : <section className="connector-grid" aria-label="Configured connectors">{visible.map((connector) => <ConnectorCard key={connector.id} connector={connector} />)}</section>}
+
+            {quickstart && quickstartCurl && <section className="card quickstart" aria-label="Quick start">
+                <div className="quickstart-head">
+                    <div>
+                        <h2>Quick start</h2>
+                        <p>Call a live endpoint from your terminal.</p>
+                    </div>
+                </div>
+                <div className="quickstart-code">
+                    <pre>{quickstartCurl}</pre>
+                    <CopyButton value={quickstartCurl} label="Copy command" showLabel />
+                </div>
+                <div className="quickstart-foot">
+                    <Link href={`/connectors/${quickstart.id}/docs`} className="inline-link"><BookOpen size={14} style={{ verticalAlign: '-2px' }} /> {quickstart.name} API reference</Link>
+                    <ul className="provider-status" aria-label="Provider status">
+                        {providerStatus.map((provider) => <li key={provider.id} className={provider.configured ? 'is-ready' : 'is-missing'} title={provider.configured ? 'Credentials configured on the server' : 'No API key configured on the server'}>
+                            <span className="status-dot" />{provider.label}<span className="muted">{provider.configured ? 'ready' : 'not configured'}</span>
+                        </li>)}
+                    </ul>
+                </div>
+            </section>}
         </>}
     </AppShell>;
 }
@@ -157,7 +111,7 @@ export default function ConnectorIndex({ connectors }: Props) {
 function ConnectorCard({ connector }: { connector: Connector }) {
     const types = [...new Set(connector.input_schema.map((field) => field.type))];
 
-    return <Link href={`/connectors/${connector.id}`} className="card connector-card" data-reveal prefetch onPointerMove={trackPointer}>
+    return <Link href={`/connectors/${connector.id}`} className="card connector-card" prefetch>
         <div className="connector-card-top"><ProviderBadge provider={connector.provider} /><StatusBadge status={connector.status} /></div>
         <div>
             <h3>{connector.name}<ArrowUpRight size={15} /></h3>
@@ -173,34 +127,10 @@ function ConnectorCard({ connector }: { connector: Connector }) {
     </Link>;
 }
 
-function Feature({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
-    return <div className="feature" data-reveal onPointerMove={trackPointer}><span className="feature-icon">{icon}</span><h3>{title}</h3><p>{body}</p></div>;
-}
-
-/**
- * Spotlight tracking, after React Bits SpotlightCard: exposes the pointer position as CSS variables.
- */
-function trackPointer(event: PointerEvent<HTMLElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty('--mx', `${event.clientX - rect.left}px`);
-    event.currentTarget.style.setProperty('--my', `${event.clientY - rect.top}px`);
-}
-
-const ticker = [
-    { icon: <Sparkles size={15} />, label: 'Google Gemini' },
-    { icon: <Zap size={15} />, label: 'Groq' },
-    { icon: <Braces size={15} />, label: 'JSON Schema validation' },
-    { icon: <ImageIcon size={15} />, label: 'Image & file inputs' },
-    { icon: <KeyRound size={15} />, label: 'SHA-256 hashed keys' },
-    { icon: <Gauge size={15} />, label: 'Per-client rate limits' },
-    { icon: <FileCode2 size={15} />, label: 'cURL · JavaScript · Python docs' },
-    { icon: <Hash size={15} />, label: 'Token & latency logging' },
-].map(({ icon, label }) => ({ node: <span className="ticker-item">{icon}{label}</span>, title: label }));
-
 function Metric({ icon, label, value, hint }: { icon: ReactNode; label: string; value: number; hint?: string }) {
     return <div className="metric">
         <div className="metric-label">{icon}{label}</div>
-        <div className="metric-value"><span aria-hidden="true"><CountUp to={value} duration={1.6} separator="," /></span><span className="sr-only">{value.toLocaleString()}</span>{hint && <span className="metric-hint">{hint}</span>}</div>
+        <div className="metric-value">{value.toLocaleString()}{hint && <span className="metric-hint">{hint}</span>}</div>
     </div>;
 }
 

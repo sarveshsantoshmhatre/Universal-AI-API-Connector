@@ -3,7 +3,6 @@ import { AlertTriangle, BarChart3, CheckCircle2, ChevronDown, ChevronLeft, Clock
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { ApiKeysCard } from '../../components/ApiKeysCard';
 import { AppShell } from '../../components/AppShell';
-import BlurText from '../../components/reactbits/BlurText';
 import { ProviderBadge, StatusBadge } from '../../components/Badges';
 import { CodeBlock, highlightJson } from '../../components/CodeBlock';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
@@ -100,7 +99,7 @@ export default function ConnectorShow({ connector, stats, recentLogs, apiKeys }:
         <section className="page-header">
             <div>
                 <Link href="/connectors" className="back-link"><ChevronLeft size={15} /> Connectors</Link>
-                <div className="title-row"><h1><BlurText key={connector.id} text={connector.name} delay={60} direction="bottom" /></h1><StatusBadge status={connector.status} /></div>
+                <div className="title-row"><h1>{connector.name}</h1><StatusBadge status={connector.status} /></div>
                 <p className="page-subtitle">{connector.description || 'No description added.'}</p>
             </div>
             <div className="header-actions">
