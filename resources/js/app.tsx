@@ -1,4 +1,5 @@
 import '../css/app.css';
+import '../css/ocean-refresh.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
@@ -21,5 +22,5 @@ createInertiaApp({
         document.body.prepend(chrome);
         createRoot(chrome).render(<PersistentChrome />);
     },
-    progress: { color: '#6d28d9' },
+    progress: { color: '#0f766e' },
 });

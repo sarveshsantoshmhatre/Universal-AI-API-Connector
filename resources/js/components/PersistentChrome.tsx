@@ -12,7 +12,7 @@ export function PersistentChrome() {
 
     return <>
         <PageBackdrop />
-        <ClickSpark sparkColor={theme === 'dark' ? '#c4b5fd' : '#6d28d9'} sparkSize={9} sparkRadius={22} sparkCount={9} duration={450} />
+        <ClickSpark sparkColor={theme === 'dark' ? '#5eead4' : '#0f766e'} sparkSize={8} sparkRadius={20} sparkCount={7} duration={420} />
         <SmoothScroll />
     </>;
 }

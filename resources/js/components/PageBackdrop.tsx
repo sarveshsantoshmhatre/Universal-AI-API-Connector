@@ -6,8 +6,8 @@ const HyperspeedBackdrop = lazy(() => import('./HyperspeedBackdrop'));
 
 /**
  * Animated background fixed behind every page.
- * Dark theme: the React Bits Hyperspeed light-trail road in violet (three.js, loaded lazily).
- * Light theme, reduced motion, or `?bg=grainient`: a slow, grainy violet gradient (React Bits Grainient).
+ * Dark theme: a teal light-trail road. Light theme, reduced motion, or ?bg=grainient:
+ * a slow ocean-toned gradient.
  */
 export function PageBackdrop() {
     const theme = useTheme();
@@ -36,15 +36,15 @@ export function PageBackdrop() {
     return <div className={`page-backdrop is-${theme}`} aria-hidden="true">
         <Grainient
             key={theme}
-            color1={dark ? '#150d2a' : '#ede9fe'}
-            color2={dark ? '#6d28d9' : '#8b5cf6'}
-            color3={dark ? '#16131f' : '#f4f3f8'}
+            color1={dark ? '#071317' : '#d9f4ef'}
+            color2={dark ? '#0f766e' : '#99e5d8'}
+            color3={dark ? '#0c191e' : '#f2f7f7'}
             timeSpeed={reducedMotion ? 0 : 0.2}
             warpStrength={1}
-            grainAmount={dark ? 0.06 : 0.04}
+            grainAmount={dark ? 0.06 : 0.035}
             grainAnimated={!reducedMotion}
-            contrast={1.1}
-            saturation={dark ? 1 : 0.8}
+            contrast={1.05}
+            saturation={dark ? 0.95 : 0.75}
             lightMode={!dark}
         />
     </div>;
