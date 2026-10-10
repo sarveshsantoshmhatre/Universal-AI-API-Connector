@@ -48,8 +48,17 @@ export default function ConnectorIndex({ connectors }: Props) {
 
     return <AppShell>
         <Head title="Connectors" />
-        <section className="page-header">
-            <div>
+        <section className="page-header page-header-3d">
+            <div className="hero-visual" aria-hidden="true">
+                <span className="hero-visual-orbit hero-visual-orbit-a" />
+                <span className="hero-visual-orbit hero-visual-orbit-b" />
+                <span className="hero-visual-orbit hero-visual-orbit-c" />
+                <span className="hero-visual-core" />
+                <span className="hero-visual-node hero-visual-node-a" />
+                <span className="hero-visual-node hero-visual-node-b" />
+                <span className="hero-visual-base" />
+            </div>
+            <div className="page-header-copy">
                 <h1>Connectors</h1>
                 <p className="page-subtitle">Turn an AI prompt into a validated HTTP API. Each connector below is a live endpoint with its own docs, playground and usage log.</p>
             </div>
