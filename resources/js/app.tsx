@@ -1,10 +1,8 @@
 import '../css/app.css';
-import '../css/ocean-refresh.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import type { ComponentType } from 'react';
-import { PersistentChrome } from './components/PersistentChrome';
 
 createInertiaApp({
     resolve: async (name) => {
@@ -16,11 +14,6 @@ createInertiaApp({
     setup({ el, App, props }) {
         if (!el) return;
         createRoot(el).render(<App {...props} />);
-
-        const chrome = document.createElement('div');
-        chrome.id = 'chrome';
-        document.body.prepend(chrome);
-        createRoot(chrome).render(<PersistentChrome />);
     },
-    progress: { color: '#0f766e' },
+    progress: { color: '#2563eb' },
 });

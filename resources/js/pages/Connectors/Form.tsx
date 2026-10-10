@@ -1,8 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { AlertCircle, AlertTriangle, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronUp, Globe, KeyRound, Plus, Sparkles, Trash2, Wand2 } from 'lucide-react';
+import { AlertCircle, AlertTriangle, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronUp, Globe, KeyRound, Plus, Trash2, Wand2 } from 'lucide-react';
 import { useMemo, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { AppShell } from '../../components/AppShell';
-import BlurText from '../../components/reactbits/BlurText';
 import { ProviderBadge } from '../../components/Badges';
 import { useScrollSpy } from '../../components/useScrollSpy';
 import { availableTemplates, type ConnectorTemplate } from '../../templates';
@@ -135,8 +134,7 @@ export default function ConnectorForm({ connector, providers, existingSlugs = []
         <section className="page-header">
             <div>
                 <Link href={backHref} className="back-link"><ChevronLeft size={15} /> {connector ? connector.name : 'Connectors'}</Link>
-                <p className="eyebrow"><Sparkles size={13} /> {connector ? 'Edit connector' : 'New connector'}</p>
-                <h1><BlurText key={connector ? 'edit' : 'create'} text={connector ? 'Connector settings' : 'Create a connector'} delay={60} direction="bottom" /></h1>
+                <h1>{connector ? 'Connector settings' : 'Create a connector'}</h1>
                 <p className="page-subtitle">{connector ? 'Changes apply to the live endpoint as soon as you save.' : 'Define the contract once. The endpoint, validation, docs and playground are generated for you.'}</p>
             </div>
         </section>
