@@ -16,14 +16,11 @@ COPY resources ./resources
 COPY vite.config.js tsconfig.json ./
 RUN npm run build
 
-FROM php:8.4-apache-bookworm AS runtime
+FROM php:8.4-cli-bookworm AS runtime
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends libpq-dev libzip-dev unzip \
     && docker-php-ext-install pdo_pgsql zip \
-    && (a2dismod mpm_event 2>/dev/null || true) \
-    && (a2dismod mpm_worker 2>/dev/null || true) \
-    && a2enmod mpm_prefork rewrite \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
@@ -32,7 +29,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
-COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY docker/php.ini /usr/local/etc/php/conf.d/zz-ai-hub.ini
 COPY docker/start.sh /usr/local/bin/start-app
 
