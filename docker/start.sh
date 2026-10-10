@@ -6,8 +6,7 @@ if [ -z "${DB_URL:-}" ] && [ -n "${DATABASE_URL:-}" ]; then
     export DB_URL="$DATABASE_URL"
 fi
 
-# Keep local and hosted starts from failing when the platform has not supplied APP_KEY.
-# Configure a persistent APP_KEY in the hosting dashboard for production deployments.
+# Use a generated key only as a fallback; production should keep APP_KEY set in Railway.
 if [ -z "${APP_KEY:-}" ]; then
     export APP_KEY="base64:$(php -r 'echo base64_encode(random_bytes(32));')"
 elif [ "${APP_KEY#base64:}" = "${APP_KEY}" ]; then
@@ -20,8 +19,5 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-port="${PORT:-10000}"
-sed -i "s/Listen 80/Listen ${port}/" /etc/apache2/ports.conf
-sed -i "s/<VirtualHost *:80>/<VirtualHost *:${port}>/" /etc/apache2/sites-available/000-default.conf
-
-exec apache2-foreground
+port="${PORT:-8080}"
+exec php artisan serve --host=0.0.0.0 --port="${port}"
