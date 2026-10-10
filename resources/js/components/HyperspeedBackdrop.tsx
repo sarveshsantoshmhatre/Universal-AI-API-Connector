@@ -1,10 +1,10 @@
 import Hyperspeed from './reactbits/Hyperspeed';
 
 /**
- * Violet light-trail road, built from the React Bits Hyperspeed "one" preset.
+ * Teal and aqua light-trail road.
  * Kept in its own module so three.js and postprocessing load lazily, only when this background is shown.
  */
-const violetRoad = {
+const oceanRoad = {
     distortion: 'turbulentDistortion',
     length: 400,
     roadWidth: 10,
@@ -29,17 +29,17 @@ const violetRoad = {
     carShiftX: [-0.8, 0.8] as [number, number],
     carFloorSeparation: [0, 5] as [number, number],
     colors: {
-        roadColor: 0x0a0812,
-        islandColor: 0x0c0a16,
-        background: 0x0b0914,
-        shoulderLines: 0x1e1a2e,
-        brokenLines: 0x1e1a2e,
-        leftCars: [0xa78bfa, 0x7c3aed, 0xc4b5fd],
-        rightCars: [0xe879f9, 0x8b5cf6, 0x6d28d9],
-        sticks: 0xa78bfa,
+        roadColor: 0x071317,
+        islandColor: 0x0a2025,
+        background: 0x08171b,
+        shoulderLines: 0x1c4145,
+        brokenLines: 0x1c4145,
+        leftCars: [0x5eead4, 0x14b8a6, 0x99f6e4],
+        rightCars: [0x67e8f9, 0x0f766e, 0x2dd4bf],
+        sticks: 0x5eead4,
     },
 };
 
 export default function HyperspeedBackdrop() {
-    return <Hyperspeed effectOptions={violetRoad} />;
+    return <Hyperspeed effectOptions={oceanRoad} />;
 }
